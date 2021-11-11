@@ -1,0 +1,29 @@
+#Sql-Table-Create
+
+
+create Table inndata(
+borough varchar(50) default 'Default',
+collision_id int,
+conFVehicle1 varchar(50) default 'Default',
+conFVehicle2 varchar(50) default 'Default',
+crashDate varchar(50) default 'Default',
+crashTime varchar(50) default 'Default',
+crossStreet varchar(50) default 'Default',
+latitude int,
+longitude int,
+humanAddress varchar(50) default 'Default',
+cyclistInjured int,
+cyclistKilled int,
+motoristInjured int,
+motoristKilled int,
+pedestInjured int,
+pedestKilled int,
+personInjured int,
+personKilled int,
+offStreetName varchar(50) default 'Default',
+onStreetName varchar(50) default 'Default',
+vehicleType1 varchar(50) default 'Default',
+vehicleType2 varchar(50) default 'Default',
+zipCode int,
+PRIMARY KEY(collision_id)
+);
