@@ -8,13 +8,12 @@
     height: 400px;
       background-image:
     linear-gradient(
-      #191a1a, black
+      #1a2245, black
     );
 }
 
 .navbar{
-    background-image:
-        linear-gradient(black, #191a1a);
+   background-color:#1a2245 !important;
     width: 100%;
 }
 
@@ -30,33 +29,33 @@ bar_dropdown{
     margin-top: 50px;
     margin-left: 200px;
     margin-right: 200px;
-    background-color: #191a1a;
+    background-color: #1a2245 ;
 }
 
 .dropdown-dash{
-    margin-top : 35px;
-
-
+    margin-top : -15px;
+    margin-bottom: 30px;
 
 
    text-align: center;
     color: #191a1a;
     background-color: #191a1a !important;
 
-
+    background-color: yellow;
 
 
 }
 
 .dropdown-div{
-    margin-left: 200px;
-    margin-right: 200px;
-    margin-bottom: 50px;
+
+
+
 }
 
 .map{
     margin-top: 15px;
     margin-bottom: 15px;
+
 }
 
 .logo_1{
@@ -86,6 +85,7 @@ bar_dropdown{
    color: #808080 !important;
         margin-right: 190px;
     font-size: 20px;
+
 }
 .nav_1:hover{
     filter:drop-shadow(0 0 40px white);
@@ -262,21 +262,19 @@ bar_dropdown{
 /* Here for export page
  */
 .searched_value{
-    background-color: #191a1a;
-    color:red;
-    height: 250px;
-    margin-left: 125px;
-    padding-right: 255px;
+
 
 
 }
 
 .export_input_field{
     color: #808080;
+    margin-top: 30px;
+ width: 25%;
+   margin-left: 38%;
 
-  background-color: #191a1a;
 
-    margin-bottom: 50px;
+
 
 
 }
@@ -291,10 +289,10 @@ bar_dropdown{
 }
 
 .export_title{
+
+color : white;
     text-align: center;
-    margin-bottom: 50px;
-    margin-top: 50px;
-     color: #808080 !important;
+    font-size: 10px;
 
 
 }
@@ -303,13 +301,13 @@ bar_dropdown{
 .export_button_div{
     margin-right: 100px;
     margin-left: 100px;
-    background-color: #191a1a;
+    background-color: #1a2245;
 
 
 }
 .export_button{
 width: 100%;
-    background-color: #191a1a;
+    background-color:  #1a2245;
     color: #808080;
     border: solid 1px;
     border-color:  #808080;
@@ -331,3 +329,28 @@ width: 100%;
 .export_table{
 
 }
+
+.dash_page_test{
+
+
+}
+
+.dropdown-div_main{
+width: 24.2%;
+
+}
+
+.dropdown-div_main_2{
+width: 24.15%;
+    border: 1px #1f2d58 solid;
+    border-radius: 10px;
+    margin-left: 1.2% !important;
+    background-color: #1f2d58;
+}
+
+.dropdown-div_main_3{
+    height: 350px !important;
+ background-color: #1f2d58 !important;
+    width: 49%;
+    margin-left: 1.2% !important;
+    }

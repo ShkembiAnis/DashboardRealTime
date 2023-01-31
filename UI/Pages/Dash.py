@@ -2,8 +2,7 @@ import dash_bootstrap_components as dbc
 from PIL import Image
 from dash import dcc, html
 from INNOLAB.PLOTLY.FigureCreator import pieChartCreater, pie2ChartCreater, lineChartCreater, get_total_rows, \
-    fig_searched, get_number_of_total_case, get_number_of_total_number_of_person_killed, \
-    get_number_of_total_number_of_person_injured
+    fig_searched
 
 logo = Image.open("assets/logo.png")
 pie = pieChartCreater()
@@ -11,11 +10,6 @@ pie2 = pie2ChartCreater()
 fig_line = lineChartCreater()
 fig_line2 = lineChartCreater()
 figure = fig_searched("4407147")
-
-number_of_total_case = get_number_of_total_case()
-number_of_total_number_of_person_killed = get_number_of_total_number_of_person_killed()
-number_of_total_number_of_person_injured = get_number_of_total_number_of_person_injured()
-
 
 dash_page = html.Div([
 
@@ -25,7 +19,7 @@ dash_page = html.Div([
                 dbc.Col(html.Div([html.P("Total Cases",
                                          style={'text-align': 'center', 'color': 'white',
                                                 'font-size': '18px'}),
-                                  html.P("{:0,.2f}".format(number_of_total_case), style={'text-align': 'center', 'color': '#ffa703',
+                                  html.P("7,110,120", style={'text-align': 'center', 'color': '#ffa703',
                                                              'font-size': '28px'}),
                                   html.P("new 10,201(0.81%)", style={'text-align': 'center', 'color': '#ffa703',
                                                                      'font-size': '13px',
@@ -35,7 +29,7 @@ dash_page = html.Div([
                 dbc.Col(html.Div([html.P("Total Deaths",
                                          style={'text-align': 'center', 'color': 'white',
                                                 'font-size': '18px'}),
-                                  html.P("{:0,.2f}".format(number_of_total_number_of_person_killed), style={'text-align': 'center', 'color': '#a8294b',
+                                  html.P("7,110,120", style={'text-align': 'center', 'color': '#a8294b',
                                                              'font-size': '28px'}),
                                   html.P("new 10,201(0.81%", style={'text-align': 'center', 'color': '#a8294b',
                                                                     'font-size': '13px',
@@ -45,7 +39,7 @@ dash_page = html.Div([
                 dbc.Col(html.Div([html.P("Total Injured",
                                          style={'text-align': 'center', 'color': 'white',
                                                 'font-size': '18px'}),
-                                  html.P("{:0,.2f}".format(number_of_total_number_of_person_injured), style={'text-align': 'center', 'color': '#0a7715',
+                                  html.P("7,110,120", style={'text-align': 'center', 'color': '#0a7715',
                                                              'font-size': '28px'}),
                                   html.P("new 10,201(0.81%", style={'text-align': 'center', 'color': '#0a7715',
                                                                     'font-size': '13px',
@@ -108,16 +102,17 @@ dash_page = html.Div([
                 ]), style={'border': 'solid, #1f2d58, 1px', 'border-radius': '10px', 'height': '350px',
                            'background-color': '#1f2d58'}, className="dropdown-div_main", width=6, lg=3),
 
+
+
+
                 dbc.Col(html.Div(dcc.Graph(id="linechart3", figure=pie2,
                                            style={'height': '350px', 'background-color': '#1f2d58', }),
-                                 style={'background-color': '#191a1a'}), className="dropdown-div_main_2", width=6,
-                        lg=3),
+                                 style={'background-color': '#191a1a'}), className="dropdown-div_main_2", width=6, lg=3),
 
                 dbc.Col(html.Div(dcc.Graph(id="graph-2", style={'padding': '5px'}),
 
                                  ), style={'height': '350px', 'background-color': '#1f2d58',
-                                           'border': 'solid, #1f2d58, 1px', 'border-radius': '10px'},
-                        className="dropdown-div_main_3", width=6, lg=6),
+                                        'border': 'solid, #1f2d58, 1px', 'border-radius': '10px'}, className="dropdown-div_main_3", width=6, lg=6),
 
             ],
             style={'height': '350px', 'margin-left': '200px',
@@ -125,32 +120,9 @@ dash_page = html.Div([
                    }),
         dbc.Row(
             dcc.Graph(id="graph", className="map"),
-            style={'background-color': '#1f2d58', 'border': 'solid, 1px, #1f2d58', 'border-radius': '10px',
-                   'height': '490px', 'margin-left': '200px',
+            style={'background-color': '#1f2d58', 'border': 'solid, 1px, #1f2d58', 'border-radius': '10px', 'height': '490px', 'margin-left': '200px',
                    'margin-right': '200px',
-                   'margin-bottom': '30px', 'margin-top': '30px'}),
-
-        dbc.Row(
-            [
-                dbc.Col(
-                    html.Div(dcc.Graph(id="linechart", figure=fig_line, style={'height': '340px', 'padding': '5px'}),
-                             style={'height': '350px', 'background-color': '#1f2d58',
-                                    'border': 'solid, #1f2d58, 1px', 'border-radius': '10px'}), width=6, lg=6),
-
-                dbc.Col(
-                    html.Div(
-                            [
-                                html.Div(dbc.Input(id="input", placeholder="Type the collisions ID, that you looking for....",
-                                          type="text", value='4407147',className="export_input_field"), style={'height': '40px'}),
-                                html.Div(dcc.Graph(id='searched-value', figure=figure, style={'height': '270px'}))
-                            ]
-                    )
-
-                    , width=6, lg=6, style={'height': '350px', 'border': 'solid, #1f2d58, 1px', 'border-radius': '10px', 'background-color': '#1f2d58',}
-                    )
-            ]
-        ,style = {'height': '350px', 'margin-left': '190px', 'margin-right': '200px', 'margin-bottom': '50px'}
-),
+                   'margin-bottom': '50px', 'margin-top': '30px'}),
 
         dbc.Row(html.H1("drive safe.", className="drive_safe")),
 

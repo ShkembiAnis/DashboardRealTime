@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from random import randint
 import numpy as np
 import time
-from DAL.DataGetter import read_data_from_database
+from INNOLAB.DAL.DataGetter import read_data_from_database
 import streamlit as st
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
@@ -37,6 +37,18 @@ def update_dataset(start) -> pd.DataFrame:
 df = update_dataset(Start)
 
 
+df2 = df.groupby(['VEHICLE_TYPE_CODE_2'], sort=False).size().reset_index(name='count').sort_values(['count'], ascending=False).head(4)
+
+
+def get_number_of_total_case():
+    return len(df)
+
+def get_number_of_total_number_of_person_killed():
+      return df["NUMBER_OF_PERSONS_KILLED"].sum()
+
+def get_number_of_total_number_of_person_injured():
+      return df["NUMBER_OF_PERSONS_INJURED"].sum()
+
 
 
 def get_total_rows():
@@ -61,20 +73,20 @@ def numberOfCol(year):
 
 def figureCreaterByYear(year):
     df = grouper(year)
-    fig_bar = px.histogram(df, x="MONTH", y="NUMBER_OF_PERSONS_KILLED", height=400)
+    fig_bar = px.histogram(df, x="MONTH", y="NUMBER_OF_PERSONS_KILLED", height=340)
     fig_bar.update_yaxes(matches=None, showticklabels=True, visible=True, title=None)
     fig_bar.update_xaxes(matches=None, showticklabels=True, visible=True, title=None)
     fig_bar.update_layout(
-        font={"color": "#62DFC7"},
+        font={"color": "#ffc434"},
         title={
-            'text': "Bar plot to show number of persons killed in "+year,
+            'text': "Bar plot to show number of persons killed",
             'y': 0.9,
             'x': 0.5,
             'xanchor': 'center',
-            'yanchor': 'top'},
-        paper_bgcolor="#fdfff5", plot_bgcolor="#fdfff5", xaxis_showgrid=False,
+            'yanchor': 'top'}, paper_bgcolor="#1f2d58", plot_bgcolor="#1f2d58", xaxis_showgrid=False,
         yaxis_showgrid=False)
-    fig_bar.update_traces(marker_color='#62DFC7')
+    fig_bar.update_traces(marker_color='#ffa703')
+    fig_bar.update_layout(bargap=0.2)
     return fig_bar
 
 
@@ -82,8 +94,8 @@ def mapCreaterByYear(year):
     df = grouper(year)
     fig_map = px.scatter_mapbox(df, lat="LATITUDE", lon="LONGITUDE", hover_name="ON_STREET_NAME",
                                 hover_data=["NUMBER_OF_PERSONS_KILLED", "NUMBER_OF_PERSONS_INJURED"],
-                                color_discrete_sequence=["#ffc434"], zoom=5, height=590)
-    fig_map.update_layout(mapbox_style="light", mapbox_accesstoken=token)
+                                color_discrete_sequence=["#ffc434"], zoom=5, height=450)
+    fig_map.update_layout(mapbox_style="dark", mapbox_accesstoken=token)
     fig_map.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
     return fig_map
 
@@ -102,25 +114,25 @@ def mapCreaterBySearchedValue(id):
 def tableCreaterByYear(year):
     df = grouper(year)
     fig = go.Figure(data=[go.Table(
-    header=dict(values=list(head_list), align='left', line_color='#62DFC7', fill_color='#fdfff5',
+    header=dict(values=list(head_list), align='left', line_color='#ffc434', fill_color='#1f2d58',
                 font=dict(color='white', size=12)),
     cells=dict(values=[df.COLLISION_ID, df.CRASH_DATE, df.CRASH_TIME,
                        df.LATITUDE, df.LONGITUDE, df.BOROUGH, df.NUMBER_OF_PERSONS_INJURED,
                        df.NUMBER_OF_PERSONS_KILLED], align='left',
-               line_color='#fdfff5',
+               line_color='#ffc434',
                # 2-D list of colors for alternating rows
-               fill_color="#fdfff5",
-               font=dict(color='#62DFC7', size=11)))])
+               fill_color="#1f2d58",
+               font=dict(color='white', size=11)))])
 
     fig.update_layout(
-        font={"color": "#62DFC7"},
+        font={"color": "#808080"},
         title={
             'text': "In this table you are seeing the all collisions information from "+year,
             'y': 0.9,
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top'})
-    fig.update_layout(paper_bgcolor="#fdfff5")
+    fig.update_layout(paper_bgcolor="#1f2d58")
     return fig
 
 
@@ -135,13 +147,13 @@ def lineChartCreater():
     df_line = pd.DataFrame(lst, columns=cols)
     fig_line = px.line(df_line, x="Year", y="Count")
     fig_line.update_layout(
-        font={"color": "#62DFC7"},
+        font={"color": "#ffc434"},
         title={
             'text': "Line chart to show count of collisions by year",
             'y': 0.9,
             'x': 0.5,
             'xanchor': 'center',
-            'yanchor': 'top'}, paper_bgcolor="#fdfff5", plot_bgcolor="#fdfff5", xaxis_showgrid=False,
+            'yanchor': 'top'}, paper_bgcolor="#1f2d58", plot_bgcolor="#1f2d58", xaxis_showgrid=True,
         yaxis_showgrid=False)
     fig_line.update_yaxes(matches=None, showticklabels=True, visible=True, title=None)
     fig_line.update_xaxes(matches=None, showticklabels=True, visible=True, title=None)
@@ -152,24 +164,29 @@ def fig_searched(value):
     sql_search = "SELECT * FROM nyc_collisions WHERE COLLISION_ID = %s" % value
     df_searched = pd.read_sql_query(sql_search, engine)
     fig_searched = go.Figure(data=[go.Table(
-        header=dict(values=list(head_list),line_color='#55C1AC', fill_color='#fdfff5', align='left'),
+        header=dict(values=list(head_list),line_color='#ffc434', fill_color='#1f2d58', align='left', font=dict(color='white', size=12)),
         cells=dict(values=[df_searched.COLLISION_ID, df_searched.CRASH_DATE, df_searched.CRASH_TIME,
                            df_searched.LATITUDE, df_searched.LONGITUDE, df_searched.BOROUGH,
                            df_searched.NUMBER_OF_PERSONS_INJURED,
                            df_searched.NUMBER_OF_PERSONS_KILLED], align='left',
-                   line_color='#55C1AC',
+                   line_color='#ffc434',
                    # 2-D list of colors for alternating rows
-                   fill_color="#fdfff5",
-                   font=dict(color='#55C1AC', size=11)))])
+                   fill_color="#1f2d58",
+                   font=dict(color='white', size=11)))])
     fig_searched.update_layout(
-        font={"color": "#55C1AC"},
         title={
             'text': "In this table you are seeing the information about collisions, that has the id no: "+str(value),
             'y': 0.9,
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top'})
-    fig_searched.update_layout(paper_bgcolor="#fdfff5")
+    fig_searched.update_layout(paper_bgcolor="#1f2d58")
+    fig_searched.update_layout(
+        font=dict(
+        family="Courier New, monospace",
+        size=12,
+        color="white"
+    ))
     return fig_searched
 
 
@@ -213,7 +230,7 @@ def pieChartCreater():
     fig_pie.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font={"color": "#62DFC7"},
+        font={"color": "#ffc434"},
         title={
             'text': "Vehicles causing collisions",
             'y': 0.9,
@@ -226,30 +243,35 @@ def pieChartCreater():
     fig_pie.update_layout(uniformtext_minsize=12)
     return fig_pie
 
-
+colors = ['#ffa703', '#a8294b', '#0a7715', '#d74f67']
 def pie2ChartCreater():
-    fig_pie2 = px.pie(df,
-                      values='NUMBER_OF_PERSONS_INJURED',
+    fig_pie2 = px.pie(df2,
+                      values='count',
                       names='VEHICLE_TYPE_CODE_2',
+
                       title='Population of European continent',
-                      color_discrete_map={'Thur': 'lightcyan',
-                                          'Fri': 'cyan',
-                                          'Sat': 'royalblue',
-                                          'Sun': 'darkblue'},
-                      hole=0.5
+
+                      hole=0.5,
+
                       )
     fig_pie2.update_layout(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        font={"color": "#62DFC7"},
+        font={"color": "#ffc434"},
         title={
-            'text': "Vehicles affected by collisions",
+            'text': "Vehicles affected by the collisions",
             'y': 0.9,
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top'},
+        legend={
+            'orientation': 'h',
+            'xanchor': 'center', 'x': 0.5, 'y': -0.07
+        }
     )
-    fig_pie2.update_layout(showlegend=False)
+
+    fig_pie2.update_layout(showlegend=True)
     fig_pie2.update_traces(textposition='inside')
-    fig_pie2.update_layout(uniformtext_minsize=12)
+    fig_pie2.update_traces(marker=dict(colors=colors))
+    fig_pie2.update_layout(uniformtext_minsize=1200)
     return fig_pie2
